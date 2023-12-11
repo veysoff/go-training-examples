@@ -6,13 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// album represents data about a record album.
 type task struct {
 	ID    string `json:"id"`
 	Title string `json:"title"`
 }
 
-// albums slice to seed record album data.
 var tasks = []task{
 	{ID: "1", Title: "Title 1"},
 	{ID: "2", Title: "Title 2"},
@@ -28,12 +26,10 @@ func main() {
 	router.Run("localhost:8080")
 }
 
-// getAlbums responds with the list of all albums as JSON.
 func getTasks(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, tasks)
 }
 
-// postAlbums adds an album from JSON received in the request body.
 func postTasks(c *gin.Context) {
 	var newTask task
 
