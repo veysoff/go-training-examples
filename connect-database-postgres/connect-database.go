@@ -16,6 +16,11 @@ const (
 	DBNAME   = "TestGoDB"
 )
 
+type task struct {
+	Id    int
+	Title string
+}
+
 func main() {
 	// Connection
 	connString := fmt.Sprintf(
@@ -49,12 +54,17 @@ func main() {
 	check(err)
 	defer rows.Close()
 
+	tasks := []task{}
+
 	for rows.Next() {
+		t := task{}
 		err := rows.Scan(&id, &title)
 		if err != nil {
 			log.Fatal(err)
+			continue
 		}
-		log.Println(id, title)
+		tasks = append(tasks, t)
+		log.Println(t)
 	}
 	err = rows.Err()
 	check(err)
@@ -72,13 +82,9 @@ func main() {
 	fmt.Println(count)
 
 	// Get by id
-	type Task struct {
-		Id    int
-		Title string
-	}
 
 	sqlStatement := buildGetByIdSql(1)
-	var task Task
+	var task task
 	row := db.QueryRow(sqlStatement)
 	err = row.Scan(&task.Id, &task.Title)
 	switch err {
